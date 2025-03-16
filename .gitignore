@@ -2,3 +2,5 @@ datasets/
 *.txt
 .ipynb_checkpoints/
 venv/
+__pycache__
+*.pth
