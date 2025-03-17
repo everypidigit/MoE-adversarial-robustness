@@ -1,4 +1,4 @@
-from UNetTorch import UNet
+from .UNetTorch import UNet
 import torch.nn as nn
 import torch
 
@@ -8,12 +8,11 @@ class UNetEnsemble(nn.Module):
         self,
         model_paths=None,
         in_channels=3,
-        out_channels=1,
+        out_channels=3,
         device="mps"
     ):
         super(UNetEnsemble, self).__init__()
 
-        # Create 3 separate UNet models
         self.models = nn.ModuleList([
             UNet(
                 in_channels=in_channels, out_channels=out_channels
@@ -26,7 +25,6 @@ class UNetEnsemble(nn.Module):
             ).to(device),
         ])
 
-        # Load pre-trained models if paths are provided
         if model_paths:
             for model, path in zip(self.models, model_paths):
                 checkpoint = torch.load(path, map_location=device)

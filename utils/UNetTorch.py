@@ -3,7 +3,7 @@ import torch
 
 
 class UNet(nn.Module):
-    def __init__(self, in_channels=3, out_channels=1):
+    def __init__(self, in_channels=3, out_channels=3):
         super(UNet, self).__init__()
 
         def conv_block(in_c, out_c):
