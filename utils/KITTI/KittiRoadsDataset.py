@@ -23,14 +23,12 @@ class KittiRoadsDataset(Dataset):
             [f for f in os.listdir(self.image_dir) if f.lower().endswith((".png", ".jpg", ".jpeg"))]  # noqa: E501
         )
 
-        # Define color mappings
         self.color_map = {
             (255, 0, 0): 0,  # Red -> Class 0 (Background)
             (0, 0, 0): 1,     # Black -> Class 1 (Obstacle)
             (255, 0, 255): 2  # Magenta -> Class 2 (Road)
         }
 
-        # Define image and mask transformations
         self.image_transform = transforms.Compose([
             transforms.Resize((256, 256)),
             transforms.RandomHorizontalFlip(),
@@ -59,7 +57,6 @@ class KittiRoadsDataset(Dataset):
         image_path = os.path.join(self.image_dir, image_name)
         image = Image.open(image_path).convert('RGB')
 
-        # Construct the corresponding mask filename
         road_type, image_index = image_name.split('_')[0], image_name.split('_')[1]  # noqa: E501
         road_gt_filename = f"{road_type}_road_{image_index}"
         road_gt_path = os.path.join(self.gt_dir, road_gt_filename)
@@ -71,7 +68,6 @@ class KittiRoadsDataset(Dataset):
             print(f"Warning: Road GT missing for {image_name}, using blank mask.")  # noqa: E501
             road_gt = torch.zeros(self.image_size, dtype=torch.long)
 
-        # Apply image transformations
         image = self.image_transform(image)
 
         return {'image': image, 'road_gt': road_gt}
